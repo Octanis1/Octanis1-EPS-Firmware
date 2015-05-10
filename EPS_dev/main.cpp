@@ -6,14 +6,21 @@
  */
 
 #include <msp430.h>
+#include <msp430g2744.h>
+
 
 /******************************/
 //alias definition for the pins
 //analogic onboard current and voltage sensors
-#define SOL_CURRENT
-#define BAT_CURRENT
-#define BUS_VOLT
-#define BAT_VOLT
+#define CH_SOL_CURRENT		INCH02
+#define CH_BAT_CURRENT		INCH01
+#define CH_BUS_VOLT			INCH06
+#define CH_BAT_VOLT			INCH07
+//4 external analog inputs
+#define ANALOG1		INCH12
+#define ANALOG2 	INCH13
+#define ANALOG3 	INCH14
+#define ANALOG4 	INCH15
 //protected external power switches
 #define EXT_PW1
 #define EXT_PW2
@@ -22,11 +29,6 @@
 #define HEAT1
 #define HEAT2
 #define HEAT3
-//4 external analog inputs
-#define TEMP1
-#define TEMP2
-#define TEMP3
-#define TEMP4
 //enable pin for battery charging
 #define EN_CHG
 //I2C address for mainboarf
@@ -59,15 +61,33 @@
 #define PARAM_BUS_VOLT
 #define PARAM_BAT_TEMP
 
-
 /*
  * main.c
  */
 void main(void) {
 
-	while(1){
-		WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	}
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+
+	//initializing pins I/O direction 0 = IN 1=OUT
+	P1DIR=0b11111110; //all but P1.0 are OUTPUTS
+	P2DIR=0b10000000; //all but XOUT are INPUTS
+	P3DIR=0b00000000; //all INPUTs
+	P4DIR=0b00000000; //all INPUTs
+
+	//initializing pins mode 0 = I/O 1=AUX
+	P1SEL=0x00;
+	P2SEL=0xC6; //init (A01) (A02) and (Xin) (Xout) functions TO BE CHECKED for XIN !!
+	P3SEL=0xC6; //init (A06) (A07) and SDA SCL functions      TO Be CHECKED for I2C !!
+	P4SEL=0x78; //init (A12) to (A15)
+
+	//initializing OUTPUT values
+	P1OUT= P1DIR | 0x00; //init all outputs to GND
+
+	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
+
+//	while(1){
+
+//	}
 
 }
 
