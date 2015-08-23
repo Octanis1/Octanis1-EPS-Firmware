@@ -16,3 +16,418 @@ Finished building target: EPS_dev.out
  
 
 **** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+gmake: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+Finished building: ../main.cpp
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+remark #10371-D: (ULP 1.1) Detected no uses of low power mode state changing instructions
+Finished building target: EPS_dev.out
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+Finished building: ../main.cpp
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+remark #10371-D: (ULP 1.1) Detected no uses of low power mode state changing instructions
+Finished building target: EPS_dev.out
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 127: error #138: expression must be a modifiable lvalue
+"../main.cpp", line 130: error #138: expression must be a modifiable lvalue
+"../main.cpp", line 133: error #138: expression must be a modifiable lvalue
+4 errors detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+>> Compilation failure
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 133: error #20: identifier "byte" is undefined
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+2 errors detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+>> Compilation failure
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void (*)()" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+
+>> Compilation failure
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 102: error #169: argument of type "void" is incompatible with parameter of type "void (*)(volatile unsigned char *)"
+
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+>> Compilation failure
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+1 error detected in the compilation of "../main.cpp".
+gmake: *** [main.obj] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+Finished building: ../main.cpp
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+
+>> Compilation failure
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+Finished building: ../main.cpp
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+
+>> Compilation failure
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+
+>> Compilation failure
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+>> Compilation failure
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+
+>> Compilation failure
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k clean 
+rm -rf  "EPS_dev.out"  "EPS_dev.hex" 
+rm -rf "main.pp" 
+rm -rf "TI_USCI_I2C_slave.pp" 
+rm -rf "TI_USCI_I2C_slave.obj" "main.obj" 
+Finished clean
+ 
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k clean 
+rm -rf  "EPS_dev.out"  "EPS_dev.hex" 
+rm -rf "main.pp" 
+rm -rf "TI_USCI_I2C_slave.pp" 
+rm -rf "TI_USCI_I2C_slave.obj" "main.obj" 
+Finished clean
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project EPS_dev ****
+
+/opt/ti/ccsv6/utils/bin/gmake -k all 
+Building file: ../TI_USCI_I2C_slave.c
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="TI_USCI_I2C_slave.pp"  "../TI_USCI_I2C_slave.c"
+Finished building: ../TI_USCI_I2C_slave.c
+ 
+Building file: ../main.cpp
+Invoking: MSP430 Compiler
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --include_path="/opt/ti/ccsv6/ccs_base/msp430/include" --include_path="/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal --preproc_with_compile --preproc_dependency="main.pp"  "../main.cpp"
+"../main.cpp", line 19: remark #1534-D: (ULP 7.1) Detected use of global variable "TXData" within one function "transmit_cb". Recommend placing variable in the function locally
+"../main.cpp", line 18: warning #552-D: variable "RXData" was set but never used
+Finished building: ../main.cpp
+ 
+Building target: EPS_dev.out
+Invoking: MSP430 Linker
+"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/bin/cl430" -vmsp --abi=eabi --use_hw_mpy=none --advice:power=all -g --define=__MSP430G2744__ --diag_warning=225 --display_error_number --diag_wrap=off --printf_support=minimal -z -m"EPS_dev.map" --heap_size=80 --stack_size=80 -i"/opt/ti/ccsv6/ccs_base/msp430/include" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/lib" -i"/opt/ti/ccsv6/tools/compiler/ti-cgt-msp430_4.4.3/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EPS_dev_linkInfo.xml" --use_hw_mpy=none --rom_model -o "EPS_dev.out" "./TI_USCI_I2C_slave.obj" "./main.obj" "../lnk_msp430g2744.cmd"  -l"libc.a" 
+<Linking>
+
+ undefined                                                                                                     first referenced
+  symbol                                                                                                           in file     
+ ---------                                                                                                     ----------------
+ TI_USCI_I2C_slaveinit(void (*)(), void (*)(volatile unsigned char *), void (*)(unsigned char), unsigned char) ./main.obj      
+
+error #10234-D: unresolved symbols remain
+error #10010: errors encountered during linking; "EPS_dev.out" not built
+
+>> Compilation failure
+gmake: *** [EPS_dev.out] Error 1
+gmake: Target `all' not remade because of errors.
+
+**** Build Finished ****
