@@ -142,6 +142,7 @@ void EPS_init(void){
 }
 
 void updateMeasurements(int blocking, int *buffer) {
+	int i;
 	//ADC measurements (automatic update in BG?)
 	ADC10CTL0 &= ~ENC;
 	while (ADC10CTL1 & BUSY);               // Wait if ADC10 core is active
@@ -169,7 +170,6 @@ void updateMeasurements(int blocking, int *buffer) {
 void main(void) {
 
 	char flags = 0x01; // start in emergency state with main off
-	//Voltage and current in mV and mA
 	unsigned int Vbus = 0;
 	unsigned int Vbat = 0;
 	unsigned int Ibat = 0;

@@ -83,28 +83,6 @@ void transmit_cb(unsigned char volatile *send_next);
 #define PARAM_BUS_VOLT
 #define PARAM_BAT_TEMP
 
-/*****************************/
-//conversion factors and offsets
-#define FACTOR_BAT_VOLT (3300/2)
-#define FACTOR_BUS_VOLT (3300/2)
-#define FACTOR_SOL_CURRENT (1024)
-#define FACTOR_BAT_CURRENT (1024)
-#define FACTOR_ANALOG1 (1024)
-#define FACTOR_ANALOG2 (1024)
-#define FACTOR_ANALOG3 (1024)
-#define FACTOR_ANALOG4 (1024)
-#define FACTOR_ADC (1024)
-
-#define OFFSET_BAT_VOLT		(0)
-#define OFFSET_BUS_VOLT		(0)
-#define OFFSET_SOL_CURRENT	(0)
-#define OFFSET_BAT_CURRENT	(0)
-#define OFFSET_ANALOG1		(0)
-#define OFFSET_ANALOG2		(0)
-#define OFFSET_ANALOG3		(0)
-#define OFFSET_ANALOG4		(0)
-
-long buffer32;
 
 void EPS_init(void){
 
@@ -130,7 +108,7 @@ void EPS_init(void){
 	TI_USCI_I2C_slaveinit(start_cb, transmit_cb, receive_cb, I2C_EPS_SLAVE_ADDR); // init the slave
 	_EINT();
 
-	//initialize clock
+	//initilize clock
 	BCSCTL1 = CALBC1_16MHZ;
 	DCOCTL = CALDCO_16MHZ;
 	//LPM0;
@@ -147,8 +125,8 @@ void updateMeasurements(int blocking, int *buffer) {
 	while (ADC10CTL1 & BUSY);               // Wait if ADC10 core is active
 
 	ADC10SA = (unsigned int) buffer;                   // Data buffer start
-	ADC10CTL1 = ANALOG4 + CONSEQ_1;     // A15 to A0, single sequence
-	ADC10DTC1 = 16;                       // 16 conversions
+	ADC10CTL1 = CH_BAT_VOLT + CONSEQ_1;     // A7 to A0, single sequence
+	ADC10DTC1 = 0x08;                       // 8 conversions
 
 	ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
 
@@ -169,18 +147,9 @@ void updateMeasurements(int blocking, int *buffer) {
 void main(void) {
 
 	char flags = 0x01; // start in emergency state with main off
-	//Voltage and current in mV and mA
-	unsigned int Vbus = 0;
-	unsigned int Vbat = 0;
-	unsigned int Ibat = 0;
-	unsigned int Isol = 0;
-
-	int Temp1 = 0;
-	int Temp2 = 0;
-	int Temp3 = 0;
-	int Temp4 = 0;
-
-	int AdcResults[16];
+	float Vcc = 0;
+	float Vbat = 0;
+	int AdcResults[8];
 
 	EPS_init();
 
@@ -193,27 +162,18 @@ void main(void) {
 		// update voltage and batery values, blocking call to ADC, putting CPU to sleep
 		updateMeasurements(1, AdcResults);
 
-		// conversion raw values to correct values & ref. values
-		Ibat = (unsigned int)((long)AdcResults[1] * (long)FACTOR_BAT_CURRENT / FACTOR_ADC) + OFFSET_BAT_CURRENT;
-		Isol = (unsigned int)((long)AdcResults[2] * (long)FACTOR_SOL_CURRENT / FACTOR_ADC) + OFFSET_SOL_CURRENT;
-		Vbus = (unsigned int)((long)AdcResults[6] * (long)FACTOR_BUS_VOLT / FACTOR_ADC) + OFFSET_BUS_VOLT;
-		Vbat = (unsigned int)((long)AdcResults[7] * (long)FACTOR_BAT_VOLT / FACTOR_ADC) + OFFSET_BAT_VOLT;
-
-		Temp1 = (int)((long)AdcResults[12] * (long)FACTOR_ANALOG1 / FACTOR_ADC) + OFFSET_ANALOG1;
-		Temp2 = (int)((long)AdcResults[13] * (long)FACTOR_ANALOG2 / FACTOR_ADC) + OFFSET_ANALOG2;
-		Temp3 = (int)((long)AdcResults[14] * (long)FACTOR_ANALOG3 / FACTOR_ADC) + OFFSET_ANALOG3;
-		Temp4 = (int)((long)AdcResults[15] * (long)FACTOR_ANALOG4 / FACTOR_ADC) + OFFSET_ANALOG4;
+		//TODO conversion raw values to correct values & ref. values
 
 		//Enable Mainboard
 		if(flags & (1<<FLAG_EMERGENCY))
 		{
-			if(Vbat > 3200 || Vbus > 3300) {
+			if(Vbat > 3.2 || Vcc > 3.30) {
 				CTRL_PORT |= EXT_PW1; //Enable mainboard
 				flags &= ~(1<<FLAG_EMERGENCY);
 			}
 		}
 		else {
-			if(Vbat < 2800 || Vbus < 3280) {
+			if(Vbat < 2.8 || Vcc < 3.28) {
 				CTRL_PORT &= ~EXT_PW1; //Disable mainboard
 				flags |= (1<<FLAG_EMERGENCY);
 			}
@@ -221,13 +181,13 @@ void main(void) {
 
 		//Charging
 		if(flags & (1<<FLAG_CHARGING)) {
-			if(Vbat > 4200 || Vbus < 3320) {
+			if(Vbat > 4.20 || Vcc < 3.32) {
 				CTRL_PORT &= ~EN_CHG; //Disable charging
 				flags &= ~(1<<FLAG_CHARGING);
 			}
 		}
 		else {
-			if(Vbat < 4180 && Vbus > 3340) {
+			if(Vbat < 4.18 && Vcc > 3.34) {
 				CTRL_PORT |= EN_CHG; //Enable charging
 				flags |= (1<<FLAG_CHARGING);
 			}
