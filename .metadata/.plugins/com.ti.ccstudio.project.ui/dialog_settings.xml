@@ -5,7 +5,7 @@
 	<section name="com.ti.ccstudio.project.ui.internal.preferences.DynamicPreferencePageManager">
 	</section>
 	<section name="com.ti.ccstudio.project.ui.internal.wizards.project.ProjectSettingsPage">
-		<item value="/opt/ti/ccsv6/ccs_base/common/targetdb/devices/MSP430G2744.xml" key="CCS.TARGET"/>
+		<item value="C:\ti\ccsv6\ccs_base\common\targetdb\devices\msp432p401r.xml" key="CCS.TARGET"/>
 		<item value="" key="CCS.CONNECTION"/>
 		<section name="1">
 			<item value="" key="CCS.CODEGEN_TOOL_VERSION"/>
