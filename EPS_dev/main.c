@@ -113,7 +113,21 @@ long buffer32;
 void EPS_init(void){
 
 	WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
-	//SVSCTL = 0x00; //disable supply voltage supervisor
+
+    //initialize clock
+    BCSCTL1 &= ~(XTS + DIVA_3); //No prescaler for ACLK, directly lowfreq clock source
+    BCSCTL1 |= XT2OFF; //HF XTAL2 off (if available)
+    BCSCTL2 = SELM_0 + DIVM_0 + DIVS_0;
+    BCSCTL3 = LFXT1S_2; //LFO source for ACLK (about 12 kHz)
+
+    //Switch to 1 MHz from DCO
+    BCSCTL1 = CALBC1_1MHZ;
+    DCOCTL = CALDCO_1MHZ;
+    //Make sure still same configuration as before switching to 1 MHz
+    BCSCTL1 &= ~(XTS + DIVA_3); //No prescaler for ACLK, directly lowfreq clock source
+    BCSCTL1 |= XT2OFF; //HF XTAL2 off (if available)
+
+    //SVSCTL = 0x00; //disable supply voltage supervisor, issue, right name not found
 	//initializing output values
 	CTRL_PORT=0b11100000; //Ext switches off (inverted), Charging off, all heaters off
 	P4OUT=0b00000000; //Keep StepDown enabled (inverted P4.3)
@@ -135,15 +149,10 @@ void EPS_init(void){
 	TI_USCI_I2C_slaveinit(start_cb, transmit_cb, receive_cb, I2C_EPS_SLAVE_ADDR); // init the slave
 	_EINT();
 
-	//initialize clock
-	BCSCTL1 = CALBC1_16MHZ;
-	DCOCTL = CALDCO_16MHZ;
-	//LPM0;
-
     //initializing ADC
-    ADC10CTL1 = ADC10SSEL_2 + ADC10DIV_7;            // single channel
-    ADC10CTL0 = ADC10SHT_1 + SREF_1 + ADC10ON
-              + REFON + REF2_5V + REFBURST; //16 clock cycle SH, 2.5V/0V reference, Burst reference
+    ADC10CTL1 = ADC10SSEL_3 + ADC10DIV_0;            // single channel; SMCLK
+    ADC10CTL0 = ADC10SHT_0 + SREF_1 + ADC10ON
+              + REFON + REF2_5V + REFBURST; //4 clock cycle SH, 2.5V/0V reference, Burst reference
 
 	//initializing ADC
 //	ADC10CTL1 = ANALOG4 + CONSEQ_1 + ADC10SSEL_2 + ADC10DIV_7;            // A7 to A0, single sequence
@@ -157,7 +166,7 @@ int updateMeasurements(int channel) {
         while (ADC10CTL1 & BUSY);               // Wait if ADC10 core is active
 
         //ADC10SA = (unsigned int) buffer;      // Data buffer start
-        ADC10CTL1 = channel + ADC10SSEL_2 + ADC10DIV_7;     // A15 to A0, single sequence
+        ADC10CTL1 = channel + ADC10SSEL_3 + ADC10DIV_0;     // A15 to A0, single sequence, SMCLK
         //ADC10DTC1 = 15;                       // 16 conversions
 
         ADC10CTL0 &= ~(ADC10IFG);
@@ -185,7 +194,7 @@ void main(void) {
 	int Temp3 = 0;
 	int Temp4 = 0;
 
-	int AdcResults[16];
+	//int AdcResults[16];
 
 	EPS_init();
 
@@ -234,8 +243,8 @@ void main(void) {
 		}
 		else {
 			if(Vbat < 4180 && Vbus > 3350) {
+                CTRL_PORT |= EN_CHG; //Enable charging
 			    P4OUT |= EN_SDOWN; //Disable stepdown
-				CTRL_PORT |= EN_CHG; //Enable charging
 				flags |= (1<<FLAG_CHARGING);
 			}
 		}
