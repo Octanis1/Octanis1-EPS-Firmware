@@ -12,6 +12,9 @@ CMD_SRCS += \
 C_SRCS += \
 ../TI_USCI_I2C_slave.c 
 
+C_DEPS += \
+./TI_USCI_I2C_slave.pp 
+
 OBJS += \
 ./TI_USCI_I2C_slave.obj \
 ./main.obj 
@@ -19,18 +22,15 @@ OBJS += \
 CPP_DEPS += \
 ./main.pp 
 
-C_DEPS += \
-./TI_USCI_I2C_slave.pp 
-
-CPP_DEPS__QUOTED += \
-"main.pp" 
+OBJS__QUOTED += \
+"TI_USCI_I2C_slave.obj" \
+"main.obj" 
 
 C_DEPS__QUOTED += \
 "TI_USCI_I2C_slave.pp" 
 
-OBJS__QUOTED += \
-"TI_USCI_I2C_slave.obj" \
-"main.obj" 
+CPP_DEPS__QUOTED += \
+"main.pp" 
 
 C_SRCS__QUOTED += \
 "../TI_USCI_I2C_slave.c" 

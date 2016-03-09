@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 
-<!-- Auto-generated from: /home/quentin/Documents/Octanis1/Octanis1_EPS_Firmware/.metadata/.plugins/com.ti.ccstudio.builddefinitions.generator/native/MSP430_4.4.3.xml -->
+<!-- Auto-generated from: /Users/raffael/Desktop/Octanis/Octanis1-EPS-Firmware/.metadata/.plugins/com.ti.ccstudio.builddefinitions.generator/native/MSP430_4.4.4.xml -->
 
 <plugin>
 
@@ -431,7 +431,7 @@ Level 0 includes register optimizations.  Level 1 adds local optimizations. Leve
 			<option
 				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.compilerID.USE_HW_MPY"
 				name="Inline hardware multiply version of RTS mpy routine (--use_hw_mpy)"
-				tip="Aliases: --use_hw_mpy&lt;BODY&gt;Inline integer/long multiply routines with the version of the RTS multiply routine that uses the hardware multiplier.  16 uses the 16-bit hardware multiplier, 32 uses the F4xxx 32-bit hardware multiplier, and F5 uses the F5xxx 32-bit hardware multiplier."
+				tip="Aliases: --use_hw_mpy&lt;BODY&gt;Replaces all references to the default integer/long multiply routines with the hardware multiplier version of the multiply routine. Additionally inlines hardware multiply calls for --opt_level&gt;=0 and --opt_for_speed&gt;=4.  16 uses the 1xx/2xx/4xx family 16-bit hardware multiplier, 32 uses the 4xx 32-bit hardware multiplier, and F5 uses the 5xx/6xx family 32-bit hardware multiplier."
 				category="com.ti.ccstudio.buildDefinitions.MSP430_4.4.cat.compilerID.BASICOPT"
 				command="--use_hw_mpy"
 				valueType="enumerated">
@@ -1144,6 +1144,14 @@ Level 0 includes register optimizations.  Level 1 adds local optimizations. Leve
 				command="--diag_error="
 				valueType="stringList">
 			</option>
+			<option
+				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.compilerID.BUFFER_DIAGNOSTICS"
+				name="Line buffer diagnostic output (--buffer_diagnostics, -pdb)"
+				tip="Aliases: --buffer_diagnostics, -pdb&lt;BODY&gt;Line buffer diagnostic output to reduce message mixing when compiling in parallel."
+				category="com.ti.ccstudio.buildDefinitions.MSP430_4.4.cat.compilerID.PDIAG"
+				defaultValue="false"
+				command="--buffer_diagnostics"
+				valueType="boolean"/>
 			<option
 				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.compilerID.DISPLAY_ERROR_NUMBER"
 				name="Emit diagnostic identifier numbers (--display_error_number, -pden)"
@@ -2403,6 +2411,14 @@ Use '--printf_support=minimal' to exclude support for width and precision flags 
 				command="--warn_sections"
 				valueType="boolean"/>
 			<option
+				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.linkerID.BUFFER_DIAGNOSTICS"
+				name="Line buffer diagnostic output (--buffer_diagnostics, -pdb)"
+				tip="Aliases: --buffer_diagnostics, -pdb&lt;BODY&gt;Line buffer diagnostic output to reduce message mixing when compiling in parallel."
+				category="com.ti.ccstudio.buildDefinitions.MSP430_4.4.cat.linkerID.LNKDIAG"
+				defaultValue="false"
+				command="--buffer_diagnostics"
+				valueType="boolean"/>
+			<option
 				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.linkerID.DISPLAY_ERROR_NUMBER"
 				name="Emit diagnostic identifier numbers (--display_error_number)"
 				tip="Aliases: --display_error_number&lt;BODY&gt;Emit diagnostic identifier numbers"
@@ -2998,6 +3014,14 @@ NOTE: User can specify --retain='*(*)' to retain all the sections from all the i
 				name="Diagnostics Options"
 				owner="com.ti.ccstudio.buildDefinitions.MSP430_4.4.hex"/>
 			<option
+				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.hex.BUFFER_DIAGNOSTICS"
+				name="Line buffer diagnostic output (--buffer_diagnostics, -pdb)"
+				tip="Aliases: --buffer_diagnostics, -pdb&lt;BODY&gt;Line buffer diagnostic output."
+				category="com.ti.ccstudio.buildDefinitions.MSP430_4.4.cat.hex.DIAGNOSTICS"
+				defaultValue="false"
+				command="--buffer_diagnostics"
+				valueType="boolean"/>
+			<option
 				id="com.ti.ccstudio.buildDefinitions.MSP430_4.4.hex.DIAG_ERROR"
 				name="Treat diagnostic &lt;id&gt; as error (--diag_error)"
 				tip="Aliases: --diag_error&lt;BODY&gt;Treat diagnostic &lt;id&gt; as error."
@@ -3466,6 +3490,8 @@ NOTE: User can specify --retain='*(*)' to retain all the sections from all the i
 			<option command="--diag_remark" tag="DIAG_REMARK"/>
 			<option command="-pdse" tag="DIAG_ERROR"/>
 			<option command="--diag_error" tag="DIAG_ERROR"/>
+			<option command="-pdb" tag="BUFFER_DIAGNOSTICS"/>
+			<option command="--buffer_diagnostics" tag="BUFFER_DIAGNOSTICS"/>
 			<option command="-pden" tag="DISPLAY_ERROR_NUMBER"/>
 			<option command="--display_error_number" tag="DISPLAY_ERROR_NUMBER"/>
 			<option command="-pdw" tag="NO_WARNINGS"/>
@@ -3640,6 +3666,8 @@ NOTE: User can specify --retain='*(*)' to retain all the sections from all the i
 			<option command="--diag_error" tag="DIAG_ERROR"/>
 			<option command="-w" tag="WARN_SECTIONS"/>
 			<option command="--warn_sections" tag="WARN_SECTIONS"/>
+			<option command="-pdb" tag="BUFFER_DIAGNOSTICS"/>
+			<option command="--buffer_diagnostics" tag="BUFFER_DIAGNOSTICS"/>
 			<option command="--display_error_number" tag="DISPLAY_ERROR_NUMBER"/>
 			<option command="--no_warnings" tag="NO_WARNINGS"/>
 			<option command="-pdew" tag="EMIT_WARNINGS_AS_ERRORS"/>
@@ -3742,6 +3770,8 @@ NOTE: User can specify --retain='*(*)' to retain all the sections from all the i
 			<option command="--zero" tag="ZERO"/>
 			<option command="-zero" tag="ZERO"/>
 			<option command="-z" tag="ZERO"/>
+			<option command="--buffer_diagnostics" tag="BUFFER_DIAGNOSTICS"/>
+			<option command="-pdb" tag="BUFFER_DIAGNOSTICS"/>
 			<option command="--diag_error" tag="DIAG_ERROR"/>
 			<option command="--diag_remark" tag="DIAG_REMARK"/>
 			<option command="--diag_suppress" tag="DIAG_SUPPRESS"/>
