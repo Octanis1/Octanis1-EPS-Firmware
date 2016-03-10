@@ -22,10 +22,10 @@
 #define SC_OFF		0xC0
 
 // Confirmations (EPS responses)
-#define OK					0x1A
+#define COMM_OK				0x1A
 #define LOW_VOLTAGE			0x99
 #define UNKNOWN_COMMAND		0x77
-#define ERROR				0xFA
+#define COMM_ERROR			0xFA
 
 // Ask for status data
 #define V_BAT		0x0B

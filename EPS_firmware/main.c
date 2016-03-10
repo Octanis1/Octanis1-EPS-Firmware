@@ -70,6 +70,8 @@
 #include "module_control.h"
 
 volatile unsigned char RXData;
+unsigned char TXData;
+
 
 void init_eps()
 {
@@ -82,7 +84,17 @@ void init_eps()
     module_control(PORT_3V3_M_EN,PIN_3V3_M_EN,MAIN_ON);
 }
 
-void process_request()
+void check_i2c_command() // sets the response.
+{
+	switch(RXData)
+	{
+		case M3V3_1_ON: TXData=COMM_OK; break;
+		case M3V3_1_OFF: TXData=LOW_VOLTAGE; break;
+		default: TXData=UNKNOWN_COMMAND;break;
+	}
+}
+
+void execute_i2c_command()
 {
 	switch(RXData)
 	{
@@ -91,7 +103,6 @@ void process_request()
 
 		default: break;
 	}
-
 }
 
 int main(void)
@@ -102,7 +113,9 @@ int main(void)
 	UCB0CTL0 = UCMODE_3 + UCSYNC;             // I2C Slave, synchronous mode
 	UCB0I2COA = 0x48;                         // Own Address is 048h
 	UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
-	IE2 |= UCB0RXIE;                          // Enable RX interrupt
+	UCB0I2CIE |= UCSTTIE;                     // Enable STT interrupt
+	IE2 |= UCB0TXIE;                          // Enable TX interrupt
+	TXData = 0xff;                            // Used to hold TX data
 	
 	init_eps();
 
@@ -110,7 +123,7 @@ int main(void)
 	{
 		__bis_SR_register(CPUOFF + GIE);        // Enter LPM0 w/ interrupts
 		__no_operation();                       // Set breakpoint >>here<< and read
-		process_request();
+		execute_i2c_command();
 	}                                         // RXData
 }
 
@@ -118,6 +131,17 @@ int main(void)
 #pragma vector = USCIAB0TX_VECTOR
 __interrupt void USCIAB0TX_ISR(void)
 {
-  RXData = UCB0RXBUF;                       // Get RX data
-  __bic_SR_register_on_exit(CPUOFF);        // Exit LPM0
+	UCB0TXBUF = TXData;                       // TX data
+  __bic_SR_register_on_exit(CPUOFF);        // Exit LPM0 and execute request
+
+}
+
+// USCI_B0 State ISR
+#pragma vector = USCIAB0RX_VECTOR
+__interrupt void USCIAB0RX_ISR(void)
+
+{
+  UCB0STAT &= ~UCSTTIFG;                    // Clear start condition int flag
+  RXData = UCB0RXBUF;						//read command
+  check_i2c_command();
 }
