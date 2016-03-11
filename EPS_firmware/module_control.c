@@ -7,12 +7,14 @@
 
 #include "module_control.h"
 
-
-void module_control(volatile unsigned char * port, unsigned char pin, char state)
+void module_control(volatile unsigned char * port, unsigned char pin, char state, char permission)
 {
-	if(state)
-		*port |= pin;
-	else
-		*port &= ~pin;
-}
+	if(permission == COMM_OK)
+	{
+		if(state)
+			*port |= pin;
+		else
+			*port &= ~pin;
+	}
 
+}

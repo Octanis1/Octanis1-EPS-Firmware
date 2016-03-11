@@ -1,4 +1,5 @@
-/* --COPYRIGHT--,BSD_EX
+/* Example code copyright notice:
+ *  --COPYRIGHT--,BSD_EX
  * Copyright (c) 2012, Texas Instruments Incorporated
  * All rights reserved.
  *
@@ -43,105 +44,67 @@
  *
  * --/COPYRIGHT--*/
 //******************************************************************************
-//  MSP430G2x44 Demo - USCI_B0 I2C Slave RX single bytes from MSP430 Master
+//  MSP430G2x44 EPS code - USCI_B0 I2C Slave and control unit
 //
-//  Description: This demo connects two MSP430's via the I2C bus. The master
-//  transmits to the slave. This is the slave code. The interrupt driven
-//  data receiption is demonstrated using the USCI_B0 RX interrupt.
-//  ACLK = n/a, MCLK = SMCLK = default DCO = ~1.2MHz
+//  Description: This code implements all necessary sensory, control and
+//  communication functions of the Octanis 1 rover EPS (Electrical Power Sub-
+//  system). It reads out battery and solar cell currents and voltages with
+//  the on-chip ADCs, communicates with the MSP432 mainboard master through I2C
+//  and receives commands to turn on or off certain modules, i.e. voltage
+//  supplies. If necessary, it can even shut down the mainboard and remain in low-
+//  power mode until the battery has recharged enough.
 //
 //                                /|\  /|\
-//               MSP430G2x44      10k  10k     MSP430G2x44
+//               MSP430G2x44      10k  10k     MSP432 mainboard
 //                   slave         |    |        master
 //             -----------------   |    |  -----------------
-//           -|XIN  P3.1/UCB0SDA|<-|---+->|P3.1/UCB0SDA  XIN|-
+//           -|XIN  P3.1/UCB0SDA|<-|---+->|SDA 		    XIN|-
 //            |                 |  |      |                 |
 //           -|XOUT             |  |      |             XOUT|-
-//            |     P3.2/UCB0SCL|<-+----->|P3.2/UCB0SCL     |
+//            |     P3.2/UCB0SCL|<-+----->|SCL		       |
 //            |                 |         |                 |
+//        >---|P2.3/A3          |
+//        >---|P2.2/A2          |
+//        >---|P2.1/A1          |
+//        >---|P2.0/A0          |
 //
-//  William Goh
-//  Texas Instruments Inc.
-//  March 2013
-//  Built with CCS Version: 5.3.0 and IAR Embedded Workbench Version: 5.51
+//  Raffael Tschui
+//  Octanis
+//  March 2016
+//  Built with CCS Version: 6.1.1.00028 for Mac OS X
 //******************************************************************************
 #include <msp430.h>
-#include "commands.h"
+#include <stdint.h>
 #include "module_control.h"
+#include "status.h"
+#include "communication.h"
 
-volatile unsigned char RXData;
-unsigned char TXData;
 
 
 void init_eps()
 {
+	init_i2c();
+	init_adc();
+
 	P1DIR |= PIN_3V3_M_EN + PIN_3V3_1_EN + PIN_3V3_2_EN + PIN_5V_EN + PIN_11V_EN;
 	P1OUT = 0; //all modules off, except main 3v3 (active low).
-
 
 	unsigned int i;
     for(i = 0xFFFF; i > 0; i--);            // Delay
     module_control(PORT_3V3_M_EN,PIN_3V3_M_EN,MAIN_ON);
 }
 
-void check_i2c_command() // sets the response.
-{
-	switch(RXData)
-	{
-		case M3V3_1_ON: TXData=COMM_OK; break;
-		case M3V3_1_OFF: TXData=LOW_VOLTAGE; break;
-		default: TXData=UNKNOWN_COMMAND;break;
-	}
-}
-
-void execute_i2c_command()
-{
-	switch(RXData)
-	{
-		case M3V3_1_ON: module_control(PORT_3V3_1_EN,PIN_3V3_1_EN,ON); break;
-		case M3V3_1_OFF: module_control(PORT_3V3_1_EN,PIN_3V3_1_EN,OFF); break;
-
-		default: break;
-	}
-}
-
 int main(void)
 {
 	WDTCTL = WDTPW + WDTHOLD;                 // Stop WDT
-	P3SEL |= 0x06;                            // Assign I2C pins to USCI_B0
-	UCB0CTL1 |= UCSWRST;                      // Enable SW reset
-	UCB0CTL0 = UCMODE_3 + UCSYNC;             // I2C Slave, synchronous mode
-	UCB0I2COA = 0x48;                         // Own Address is 048h
-	UCB0CTL1 &= ~UCSWRST;                     // Clear SW reset, resume operation
-	UCB0I2CIE |= UCSTTIE;                     // Enable STT interrupt
-	IE2 |= UCB0TXIE;                          // Enable TX interrupt
-	TXData = 0xff;                            // Used to hold TX data
 	
 	init_eps();
 
 	while (1)
 	{
+		execute_i2c_command();
+		update_self_status();
 		__bis_SR_register(CPUOFF + GIE);        // Enter LPM0 w/ interrupts
 		__no_operation();                       // Set breakpoint >>here<< and read
-		execute_i2c_command();
-	}                                         // RXData
-}
-
-// USCI_B0 Data ISR
-#pragma vector = USCIAB0TX_VECTOR
-__interrupt void USCIAB0TX_ISR(void)
-{
-	UCB0TXBUF = TXData;                       // TX data
-  __bic_SR_register_on_exit(CPUOFF);        // Exit LPM0 and execute request
-
-}
-
-// USCI_B0 State ISR
-#pragma vector = USCIAB0RX_VECTOR
-__interrupt void USCIAB0RX_ISR(void)
-
-{
-  UCB0STAT &= ~UCSTTIFG;                    // Clear start condition int flag
-  RXData = UCB0RXBUF;						//read command
-  check_i2c_command();
+	}
 }
