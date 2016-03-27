@@ -17,14 +17,15 @@ static unsigned int analog_avg[ANALOG_PORTS];	   //avergaed analog readings
 
 
 enum adc_status_{
-	ADC_BUSY, 	//wait for it to finish
 	IDLE, 	//not in use, and not to be triggered
+	ADC_BUSY, 	//wait for it to finish
 	START, 	//the periodic timer interrupt requires a new measurement, therefore start a new ADC conversion
 	DONE		//ADC conversion is done, read values to status variable
 } adc_status;
 
 void init_adc()
 {
+	adc_status = IDLE;
 	ADC10CTL0 = ADC10SHT_2 + MSC + ADC10ON + ADC10IE + REFON + REF2_5V; // 4*ADC10CLK clycle sample period, Fast auto sequence, enable ADC, IRQ, internal reference ON at 2.5V
 	ADC10DTC1 = NB_ANALOG_ACQ*ANALOG_PORTS;   // 16 conversions per channel
 	#ifdef ANALOG_6			        //4 analog inputs
@@ -34,6 +35,13 @@ void init_adc()
 	ADC10CTL1 = INCH_7 + CONSEQ_3;  // A3-A0, repeat multi-channel mode
 	ADC10AE0 = 0xFF;                // ADC option select (select A0 - A7)
 	#endif
+}
+
+void init_timer()
+{
+	TACCTL0 = CCIE;                           // TACCR0 interrupt enabled
+	TACCR0 = 50000;
+	TACTL = TASSEL_2 + MC_2 + ID_3;                  // SMCLK, contmode
 }
 
 
@@ -136,3 +144,15 @@ __interrupt void ADC10_ISR (void)
 	adc_status = DONE;
 //	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
+
+// Timer A0 interrupt service routine
+#pragma vector=TIMERA0_VECTOR
+__interrupt void Timer_A (void)
+{
+	if(adc_status == IDLE)
+		adc_status = START;
+	TACCR0 += 50000;                          // Add Offset to TACCR0
+
+	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+}
+

@@ -27,6 +27,9 @@
 #define T_BAT_OK		800
 
 void init_adc();
+void init_timer();
+
+
 void update_self_status();
 
 

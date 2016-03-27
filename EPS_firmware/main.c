@@ -85,6 +85,7 @@ void init_eps()
 {
 	init_i2c();
 	init_adc();
+	init_timer();
 
 	P1DIR |= PIN_3V3_M_EN + PIN_3V3_1_EN + PIN_3V3_2_EN + PIN_5V_EN + PIN_11V_EN;
 	P1OUT = 0; //all modules off, except main 3v3 (active low).
