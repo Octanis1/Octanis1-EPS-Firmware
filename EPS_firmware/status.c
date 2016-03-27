@@ -125,6 +125,8 @@ void update_self_status()
 		read_adc_values();
 		thsd_adc_values();
 	}
+
+	__bis_SR_register( GIE);        // Enable interrupts
 }
 
 
@@ -132,5 +134,5 @@ void update_self_status()
 __interrupt void ADC10_ISR (void)
 {
 	adc_status = DONE;
-	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+//	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
