@@ -15,15 +15,19 @@
 #endif
 
 #define NB_ANALOG_ACQ 16
-
+//battery voltage threshold levels
 #define THRESHOLD_80	820	 	//80% of Vref
 #define THRESHOLD_60	615		//60% of Vref
 #define THRESHOLD_40	410		//40% of Vref
 #define THRESHOLD_20	204		//20% of Vref
+//battery temperature thresholds in ADC counts
+#define COLD_20			385		//too cold for charging
+#define COLD_0			672		//ok for charging
+#define HOT_30			1020	//too hot, shut lower the PID duty cycle
+#define T_BAT_OK		800
 
 void init_adc();
 void update_self_status();
-
 
 
 #endif /* STATUS_H_ */

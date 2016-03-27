@@ -42,6 +42,7 @@
 #define I_OUT		0x10
 #define AEXT1		0xA1
 #define AEXT2		0xA2
+#define T_BAT		0xBB
 //A_ext3 and A_ext4 only available when ANALOG_6 not defined (cf. status.h)
 #ifndef ANALOG_6
 	#define AEXT3		0xA3

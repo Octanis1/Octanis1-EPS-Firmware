@@ -6,6 +6,7 @@
  */
 
 #include <msp430.h>
+#include <math.h>
 #include "status.h"
 #include "module_control.h"
 #include "communication.h"
@@ -41,7 +42,7 @@ void trigger_adc()
 {
 	ADC10CTL0 &= ~ENC;						//disable before enable, safety
 	while (ADC10CTL1 & BUSY);               // Wait if ADC10 core is active
-	ADC10SA = analog_reads;                 // Data buffer start, pointer to the analog data array
+	ADC10SA = (uint16_t)analog_reads;       // Data buffer start, pointer to the analog data array
 	ADC10CTL0 |= ENC + ADC10SC;             // Enable conversion & Start conversion set up
 	adc_status = ADC_BUSY;
 }
@@ -62,7 +63,7 @@ void avg_adc_values()
 }
 
 //determine the thresholds table
-void thd_adc_values(){
+void thsd_adc_values(){
 	uint8_t i=0;
 	for(i=0;i<N_MODULES;i++) 	//everything can be turned ON
 		module_status[i]=1;
@@ -83,7 +84,16 @@ void thd_adc_values(){
 
 	if(eps_status.v_bat<THRESHOLD_20) 	//shut down the battery heater
 		module_status[HT1]=0;
+}
 
+uint16_t thsd_battery_temp(unsigned int ext_read){
+	if(ext_read<COLD_20)
+		return COLD_20;
+	if(ext_read<COLD_0)
+		return COLD_0;
+	if(ext_read>HOT_30)
+		return HOT_30;
+	else return T_BAT_OK;
 }
 
 void read_adc_values()
@@ -95,6 +105,7 @@ void read_adc_values()
 	eps_status.v_bat=(uint16_t)analog_avg[3];
 	//external analog readings
 	eps_status.analog_ext1=(uint16_t)analog_avg[4];
+	eps_status.t_bat=thsd_battery_temp(analog_avg[4]);
 	eps_status.analog_ext2=(uint16_t)analog_avg[5];
 	#ifndef ANALOG_6
 		eps_status.analog_ext3=(uint16_t)analog_avg[6];
@@ -112,7 +123,7 @@ void update_self_status()
 	if(adc_status == DONE){ // NOTE: no "else if" here, because CPU wakes up from LPM and ADC is done
 		avg_adc_values();
 		read_adc_values();
-		thd_adc_values();
+		thsd_adc_values();
 	}
 }
 

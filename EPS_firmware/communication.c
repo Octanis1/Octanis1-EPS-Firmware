@@ -60,6 +60,7 @@ void check_i2c_command() // sets the response.
 		case I_OUT: TXData = eps_status.current_out; break;
 		case AEXT1: TXData = eps_status.analog_ext1; break;
 		case AEXT2: TXData = eps_status.analog_ext2; break;
+		case T_BAT:TXData = eps_status.t_bat;break;
 
 		#ifndef ANALOG_6
 		case AEXT3: TXData = eps_status.analog_ext3; break;
