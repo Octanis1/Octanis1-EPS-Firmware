@@ -14,6 +14,12 @@
 typedef struct _eps_status { //stores the answers to be sent to an eventual i2c request
 	uint16_t v_bat;
 	uint16_t v_solar;
+	uint16_t current_in;
+	uint16_t current_out;
+	uint16_t analog_ext1;
+	uint16_t analog_ext2;
+	uint16_t analog_ext3;
+	uint16_t analog_ext4;
 } eps_status_t;
 
 extern eps_status_t eps_status;

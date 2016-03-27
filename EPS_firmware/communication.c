@@ -43,13 +43,28 @@ void check_i2c_command() // sets the response.
 		case M3V3_2_OFF: TXData=COMM_OK; break;
 		case M5V_OFF: TXData=COMM_OK; break;
 		case M11V_OFF: TXData=COMM_OK; break;
+		case HEAT_1_OFF: TXData=COMM_OK; break;
+		case HEAT_2_OFF: TXData=COMM_OK; break;
+		case HEAT_3_OFF: TXData=COMM_OK; break;
 		case M3V3_1_ON: TXData = module_status[M331]; break;
 		case M3V3_2_ON: TXData = module_status[M332]; break;
 		case M5V_ON: TXData = module_status[M5]; break;
 		case M11V_ON: TXData = module_status[M11]; break;
+		case HEAT_1_ON: TXData=module_status[HT1]; break;
+		case HEAT_2_ON: TXData=module_status[HT2]; break;
+		case HEAT_3_ON: TXData=module_status[HT3]; break;
 
-		case V_BAT: TXData = eps_status.v_bat; break;
+		case V_BAT:TXData = eps_status.v_bat; break;
 		case V_SC: TXData = eps_status.v_solar; break;
+		case I_IN: TXData = eps_status.current_in; break;
+		case I_OUT: TXData = eps_status.current_out; break;
+		case AEXT1: TXData = eps_status.analog_ext1; break;
+		case AEXT2: TXData = eps_status.analog_ext2; break;
+
+		#ifndef ANALOG_6
+		case AEXT3: TXData = eps_status.analog_ext3; break;
+		case AEXT4: TXData = eps_status.analog_ext4; break;
+		#endif
 
 		default: TXData=UNKNOWN_COMMAND;break;
 	}
@@ -66,10 +81,17 @@ void execute_i2c_command()
 			case M3V3_2_OFF: module_control(PORT_3V3_2_EN,PIN_3V3_2_EN,OFF); break;
 			case M5V_OFF: module_control(PORT_5V_EN,PIN_5V_EN,OFF); break;
 			case M11V_OFF: module_control(PORT_11V_EN,PIN_11V_EN,OFF); break;
+			case HEAT_1_OFF: module_control(PORT_HEATER_1_EN,PIN_HEATER_1_EN,OFF); break;
+			case HEAT_2_OFF: module_control(PORT_HEATER_2_EN,PIN_HEATER_2_EN,OFF); break;
+			case HEAT_3_OFF: module_control(PORT_HEATER_3_EN,PIN_HEATER_3_EN,OFF); break;
 			case M3V3_1_ON: module_control(PORT_3V3_1_EN,PIN_3V3_1_EN,ON, module_status[M331]); break;
 			case M3V3_2_ON: module_control(PORT_3V3_2_EN,PIN_3V3_2_EN,ON, module_status[M332]); break;
 			case M5V_ON: module_control(PORT_5V_EN,PIN_5V_EN, ON, module_status[M5]); break;
 			case M11V_ON: module_control(PORT_11V_EN,PIN_11V_EN, ON, module_status[M11]); break;
+			case HEAT_1_ON: module_control(PORT_HEATER_1_EN,PIN_HEATER_1_EN, ON ,module_status[HT1]); break;
+			case HEAT_2_ON: module_control(PORT_HEATER_2_EN,PIN_HEATER_2_EN, ON ,module_status[HT2]); break;
+			case HEAT_3_ON: module_control(PORT_HEATER_3_EN,PIN_HEATER_3_EN, ON , module_status[HT3]); break;
+
 
 			default: break;
 		}
