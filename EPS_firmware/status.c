@@ -26,10 +26,10 @@ enum adc_status_{
 void init_adc()
 {
 	adc_status = IDLE;
-	ADC10CTL0 = ADC10SHT_2 + MSC + ADC10ON + ADC10IE + REFON + REF2_5V; // 4*ADC10CLK clycle sample period, Fast auto sequence, enable ADC, IRQ, internal reference ON at 2.5V
+	ADC10CTL0 = ADC10SHT_1 + MSC + ADC10ON + ADC10IE + REFON + REF2_5V; // 4*ADC10CLK clycle sample period, Fast auto sequence, enable ADC, IRQ, internal reference ON at 2.5V
 	ADC10DTC1 = NB_ANALOG_ACQ*ANALOG_PORTS;   // 16 conversions per channel
 	#ifdef ANALOG_6			        //4 analog inputs
-	ADC10CTL1 = INCH_5 + CONSEQ_3;  // A3-A0, repeat multi-channel mode
+	ADC10CTL1 = INCH_5 + CONSEQ_3;  // A5-A0, repeat multi-channel mode
 	ADC10AE0 = 0x3F;                // ADC option select (select A0 - A5)
 	#else 							//8 analog inputs
 	ADC10CTL1 = INCH_7 + CONSEQ_3;  // A3-A0, repeat multi-channel mode
@@ -42,6 +42,7 @@ void init_timer()
 	TACCTL0 = CCIE;                           // TACCR0 interrupt enabled
 	TACCR0 = 50000;
 	TACTL = TASSEL_2 + MC_2 + ID_3;                  // SMCLK, contmode
+	TACCR0 += 50000;
 }
 
 
@@ -66,7 +67,7 @@ void avg_adc_values()
 			//sum up all the acquisitions
 			analog_avg[i]=analog_avg[i]+analog_reads[i+ANALOG_PORTS*j];
 		}
-		analog_avg[i]=analog_avg[i]/10; //averaging
+		analog_avg[i]=analog_avg[i]>>4; //averaging
 	}
 }
 
@@ -74,24 +75,24 @@ void avg_adc_values()
 void thsd_adc_values(){
 	uint8_t i=0;
 	for(i=0;i<N_MODULES;i++) 	//everything can be turned ON
-		module_status[i]=1;
+		module_status[i]=COMM_OK;
 
 	if(eps_status.v_bat<THRESHOLD_80){ 	//shut down the motors and extra heaters
-		module_status[M11]=0;
-		module_status[HT2]=0;
-		module_status[HT3]=0;
+		module_status[M11]=LOW_VOLTAGE;
+		module_status[HT2]=LOW_VOLTAGE;
+		module_status[HT3]=LOW_VOLTAGE;
 	}
 
 	if(eps_status.v_bat<THRESHOLD_60){ 	//shut down the 5V and externa 3.3V port # 2
-		module_status[M5]=0;
-		module_status[M332]=0;
+		module_status[M5]=LOW_VOLTAGE;
+		module_status[M332]=LOW_VOLTAGE;
 	}
 
 	if(eps_status.v_bat<THRESHOLD_40) 	//shut down the 3.3V #1
-		module_status[M331]=0;
+		module_status[M331]=LOW_VOLTAGE;
 
 	if(eps_status.v_bat<THRESHOLD_20) 	//shut down the battery heater
-		module_status[HT1]=0;
+		module_status[HT1]=LOW_VOLTAGE;
 }
 
 uint16_t thsd_battery_temp(unsigned int ext_read){
@@ -107,17 +108,17 @@ uint16_t thsd_battery_temp(unsigned int ext_read){
 void read_adc_values()
 {
 	//power monitoring
-	eps_status.current_out=(uint16_t)analog_avg[0];
-	eps_status.current_in=(uint16_t)analog_avg[1];
-	eps_status.v_solar=(uint16_t)analog_avg[2];
-	eps_status.v_bat=(uint16_t)analog_avg[3];
+	eps_status.current_out=(uint16_t)analog_avg[ANALOG_PORTS-1];
+	eps_status.current_in=(uint16_t)analog_avg[ANALOG_PORTS-2];
+	eps_status.v_solar=(uint16_t)analog_avg[ANALOG_PORTS-3];
+	eps_status.v_bat=(uint16_t)analog_avg[ANALOG_PORTS-4];
 	//external analog readings
-	eps_status.analog_ext1=(uint16_t)analog_avg[4];
-	eps_status.t_bat=thsd_battery_temp(analog_avg[4]);
-	eps_status.analog_ext2=(uint16_t)analog_avg[5];
+	eps_status.analog_ext1=(uint16_t)analog_avg[ANALOG_PORTS-5];
+	eps_status.t_bat=thsd_battery_temp(analog_avg[ANALOG_PORTS-5]);
+	eps_status.analog_ext2=(uint16_t)analog_avg[ANALOG_PORTS-6];
 	#ifndef ANALOG_6
-		eps_status.analog_ext3=(uint16_t)analog_avg[6];
-		eps_status.analog_ext4=(uint16_t)analog_avg[7];
+		eps_status.analog_ext3=(uint16_t)analog_avg[ANALOG_PORTS-7];
+		eps_status.analog_ext4=(uint16_t)analog_avg[ANALOG_PORTS-8];
 	#endif
 }
 
@@ -125,16 +126,20 @@ void read_adc_values()
 
 void update_self_status()
 {
+	TACCTL0 &= ~CCIE; 			//disable timer interrupt
+
 	if(adc_status == START)
 		trigger_adc();
+
+	while (adc_status == ADC_BUSY);   // Wait if ADC10 core is active
 
 	if(adc_status == DONE){ // NOTE: no "else if" here, because CPU wakes up from LPM and ADC is done
 		avg_adc_values();
 		read_adc_values();
 		thsd_adc_values();
 	}
-
-	__bis_SR_register( GIE);        // Enable interrupts
+	adc_status=IDLE;
+	init_timer();	//enable timer interrupt
 }
 
 
@@ -142,7 +147,7 @@ void update_self_status()
 __interrupt void ADC10_ISR (void)
 {
 	adc_status = DONE;
-//	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
 
 // Timer A0 interrupt service routine
@@ -152,7 +157,6 @@ __interrupt void Timer_A (void)
 	if(adc_status == IDLE)
 		adc_status = START;
 	TACCR0 += 50000;                          // Add Offset to TACCR0
-
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
 
