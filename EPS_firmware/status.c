@@ -27,7 +27,8 @@ void init_adc()
 {
 	adc_status = IDLE;
 	ADC10CTL0 = ADC10SHT_1 + MSC + ADC10ON + ADC10IE + REFON + REF2_5V; // 4*ADC10CLK clycle sample period, Fast auto sequence, enable ADC, IRQ, internal reference ON at 2.5V
-	ADC10DTC1 = NB_ANALOG_ACQ*ANALOG_PORTS;   // 16 conversions per channel
+	ADC10DTC1 = (NB_ANALOG_ACQ*ANALOG_PORTS);   // 16 conversions per channel
+	ADC10DTC0=0;
 	#ifdef ANALOG_6			        //4 analog inputs
 	ADC10CTL1 = INCH_5 + CONSEQ_3;  // A5-A0, repeat multi-channel mode
 	ADC10AE0 = 0x3F;                // ADC option select (select A0 - A5)
@@ -37,21 +38,13 @@ void init_adc()
 	#endif
 }
 
-void init_timer()
-{
-	TACCTL0 = CCIE;                           // TACCR0 interrupt enabled
-	TACCR0 = 50000;
-	TACTL = TASSEL_2 + MC_2 + ID_3;                  // SMCLK, contmode
-	TACCR0 += 50000;
-}
-
-
 //initialize a conversion
 void trigger_adc()
 {
 	ADC10CTL0 &= ~ENC;						//disable before enable, safety
 	while (ADC10CTL1 & BUSY);               // Wait if ADC10 core is active
 	ADC10SA = (uint16_t)analog_reads;       // Data buffer start, pointer to the analog data array
+
 	ADC10CTL0 |= ENC + ADC10SC;             // Enable conversion & Start conversion set up
 	adc_status = ADC_BUSY;
 }
@@ -126,20 +119,22 @@ void read_adc_values()
 
 void update_self_status()
 {
-	TACCTL0 &= ~CCIE; 			//disable timer interrupt
+	if(adc_status == IDLE)
+		adc_status = START;
 
 	if(adc_status == START)
 		trigger_adc();
 
-	while (adc_status == ADC_BUSY);   // Wait if ADC10 core is active
+	if(adc_status == ADC_BUSY)
+		__bis_SR_register(CPUOFF + GIE);   // Wait if ADC10 core is active
 
 	if(adc_status == DONE){ // NOTE: no "else if" here, because CPU wakes up from LPM and ADC is done
 		avg_adc_values();
 		read_adc_values();
 		thsd_adc_values();
+		adc_status=IDLE;
 	}
-	adc_status=IDLE;
-	init_timer();	//enable timer interrupt
+
 }
 
 
@@ -147,16 +142,6 @@ void update_self_status()
 __interrupt void ADC10_ISR (void)
 {
 	adc_status = DONE;
-	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
-}
-
-// Timer A0 interrupt service routine
-#pragma vector=TIMERA0_VECTOR
-__interrupt void Timer_A (void)
-{
-	if(adc_status == IDLE)
-		adc_status = START;
-	TACCR0 += 50000;                          // Add Offset to TACCR0
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
 

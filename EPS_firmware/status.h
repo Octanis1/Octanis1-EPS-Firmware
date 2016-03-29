@@ -16,10 +16,10 @@
 
 #define NB_ANALOG_ACQ 16
 //battery voltage threshold levels
-#define THRESHOLD_80	820	 	//80% of Vref
-#define THRESHOLD_60	615		//60% of Vref
-#define THRESHOLD_40	410		//40% of Vref
-#define THRESHOLD_20	204		//20% of Vref
+#define THRESHOLD_80	810	 	//80% of charge (100% is 4.2V)
+#define THRESHOLD_60	761		//60% of charge
+#define THRESHOLD_40	712		//40% of charge
+#define THRESHOLD_20	663		//20% of charge (0% is 3V)
 //battery temperature thresholds in ADC counts
 #define COLD_20			385		//too cold for charging
 #define COLD_0			672		//ok for charging
@@ -27,8 +27,6 @@
 #define T_BAT_OK		800
 
 void init_adc();
-void init_timer();
-
 
 void update_self_status();
 

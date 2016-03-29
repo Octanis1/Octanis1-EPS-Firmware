@@ -16,5 +16,7 @@ void module_control(volatile unsigned char * port, unsigned char pin, char state
 		else
 			*port &= ~pin;
 	}
-
 }
+
+
+

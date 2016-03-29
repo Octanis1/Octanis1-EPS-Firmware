@@ -11,6 +11,11 @@
 #include <stdint.h>
 #include "module_control.h"
 
+#define ALIVE 				0xA0
+#define MASTER_POKE_PORT	&P3OUT
+#define MASTER_POKE_PIN		BIT7   //on Analog EXT4 /!\
+
+
 typedef struct _eps_status { //stores the answers to be sent to an eventual i2c request
 	uint16_t v_bat;
 	uint16_t t_bat;
@@ -26,10 +31,9 @@ typedef struct _eps_status { //stores the answers to be sent to an eventual i2c 
 extern eps_status_t eps_status;
 extern uint8_t module_status[N_MODULES]; //stores the answers to be sent to an eventual i2c request
 
-
+void init_timer_A();
 void init_i2c();
 void execute_i2c_command();
-
 
 
 #endif /* COMMUNICATION_H_ */

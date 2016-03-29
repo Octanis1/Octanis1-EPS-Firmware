@@ -20,7 +20,15 @@ enum i2c_status_{
 
 eps_status_t eps_status;
 uint8_t module_status[N_MODULES]; //stores the answers to be sent to an eventual i2c request
+static uint8_t poke_counter=0;
+static uint8_t poke_pin_state=0;
 
+void init_timer_A()
+{
+	TACCR0 += 25000;
+	TACCTL0 = CCIE;                     // TACCR0 interrupt enabled
+	TACTL = TASSEL_2 + MC_2 + ID_3;     // SMCLK, contmode
+}
 
 void init_i2c()
 {
@@ -35,10 +43,12 @@ void init_i2c()
 	TXData = 0xff;                            // Used to hold TX data
 }
 
+
 void check_i2c_command() // sets the response.
 {
 	switch(RXData)
 	{
+		case ALIVE: poke_counter=COMM_OK;break;
 		case M3V3_1_OFF: TXData=COMM_OK; break;
 		case M3V3_2_OFF: TXData=COMM_OK; break;
 		case M5V_OFF: TXData=COMM_OK; break;
@@ -78,6 +88,7 @@ void execute_i2c_command()
 	{
 		switch(RXData)
 		{
+			case ALIVE: poke_counter=0;break;
 			case M3V3_1_OFF: module_control(PORT_3V3_1_EN,PIN_3V3_1_EN,OFF); break;
 			case M3V3_2_OFF: module_control(PORT_3V3_2_EN,PIN_3V3_2_EN,OFF); break;
 			case M5V_OFF: module_control(PORT_5V_EN,PIN_5V_EN,OFF); break;
@@ -96,9 +107,15 @@ void execute_i2c_command()
 
 			default: break;
 		}
-
 		i2c_status = IDLE;
 	}
+
+	module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
+	if(poke_counter>=4){
+		module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, poke_pin_state, COMM_OK);
+		poke_counter=0;
+	}
+
 }
 
 
@@ -106,7 +123,7 @@ void execute_i2c_command()
 #pragma vector = USCIAB0TX_VECTOR
 __interrupt void USCIAB0TX_ISR(void)
 {
-	UCB0TXBUF = TXData;                       // TX data
+	UCB0TXBUF = TXData;                     // TX data
 	i2c_status = NEW_COMMAND;
   __bic_SR_register_on_exit(CPUOFF);        // Exit LPM0 and execute request
 
@@ -121,3 +138,16 @@ __interrupt void USCIAB0RX_ISR(void)
 	RXData = UCB0RXBUF;						//read command
 	check_i2c_command();
 }
+
+// Timer A0 interrupt service routine
+#pragma vector=TIMERA0_VECTOR
+__interrupt void Timer_A ()
+{
+	//here we poke the main board and after x attempt without reply we reboot it
+	poke_pin_state = ~(poke_pin_state);
+	if(poke_pin_state)
+		poke_counter++;
+	TACCR0 += 25000;
+	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+}
+
