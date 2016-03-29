@@ -47,6 +47,7 @@ void trigger_adc()
 
 	ADC10CTL0 |= ENC + ADC10SC;             // Enable conversion & Start conversion set up
 	adc_status = ADC_BUSY;
+	ADC10CTL0 |= ADC10SC;
 }
 
 //determine the average adc value for each analog port
