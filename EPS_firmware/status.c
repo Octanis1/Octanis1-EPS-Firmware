@@ -6,7 +6,6 @@
  */
 
 #include <msp430.h>
-#include <math.h>
 #include "status.h"
 #include "module_control.h"
 #include "communication.h"

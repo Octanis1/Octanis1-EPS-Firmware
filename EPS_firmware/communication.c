@@ -118,12 +118,6 @@ void execute_i2c_command()
 		i2c_status = IDLE;
 	}
 
-	module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
-	if(poke_counter>=4){
-		module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, poke_pin_state, COMM_OK);
-		poke_counter=0;
-	}
-
 }
 
 
@@ -170,9 +164,14 @@ __interrupt void Timer_A ()
 {
 	//here we poke the main board and after x attempt without reply we reboot it
 	poke_pin_state = ~(poke_pin_state);
+	module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
+	if(poke_counter>=4){
+		module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, ~(poke_pin_state), COMM_OK);
+		if(poke_pin_state)poke_counter=0;
+	}
 	if(poke_pin_state)
 		poke_counter++;
-	TACCR0 += 25000;
+	TACCR0 += 50000;
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
 
