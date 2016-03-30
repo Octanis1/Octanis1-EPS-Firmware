@@ -87,7 +87,7 @@ void init_eps()
 	init_timer_A();
 
 	P1DIR |= PIN_3V3_M_EN + PIN_3V3_1_EN + PIN_3V3_2_EN + PIN_5V_EN + PIN_11V_EN;
-	P1OUT = 0; //all modules off, except main 3v3 (active low).
+	P1OUT = PIN_3V3_1_EN; //all modules off, except main 3v3 (active low) and the gps on 3V3_1.
 
 	unsigned int i;
     for(i = 0xFFFF; i > 0; i--);            // Delay
