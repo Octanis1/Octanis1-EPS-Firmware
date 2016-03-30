@@ -81,11 +81,11 @@ void thsd_adc_values(){
 		module_status[M332]=LOW_VOLTAGE;
 	}
 
-	if(eps_status.v_bat<THRESHOLD_40) 	//shut down the 3.3V #1
-		module_status[M331]=LOW_VOLTAGE;
+	if(eps_status.v_bat<THRESHOLD_40); 	//shut down the 3.3V #1
+//		module_status[M331]=LOW_VOLTAGE;
 
-	if(eps_status.v_bat<THRESHOLD_20) 	//shut down the battery heater
-		module_status[HT1]=LOW_VOLTAGE;
+	if(eps_status.v_bat<THRESHOLD_20); 	//shut down the battery heater
+//		module_status[HT1]=LOW_VOLTAGE;
 }
 
 uint16_t thsd_battery_temp(unsigned int ext_read){
@@ -112,6 +112,20 @@ void read_adc_values()
 	#ifndef ANALOG_6
 		eps_status.analog_ext3=(uint16_t)analog_avg[ANALOG_PORTS-7];
 		eps_status.analog_ext4=(uint16_t)analog_avg[ANALOG_PORTS-8];
+	#endif
+
+	//power monitoring when only 8 bit comm is implemented for i2c
+	eps_status.current_out_8=(uint8_t)(eps_status.current_out);
+	eps_status.current_in_8=(uint8_t)(eps_status.current_in);
+	eps_status.v_solar_8=(uint8_t)(eps_status.v_solar);
+	eps_status.v_bat_8=(uint8_t)(eps_status.v_bat-THRESHOLD_0);
+	//external analog readings
+	eps_status.analog_ext1_8=(uint8_t)(eps_status.analog_ext1>>2);
+	eps_status.t_bat_8=(uint8_t)(eps_status.t_bat>>2);
+	eps_status.analog_ext2_8=(uint8_t)(eps_status.analog_ext2>>2);
+	#ifndef ANALOG_6
+		eps_status.analog_ext3_8=(uint8_t)(eps_status.analog_ext3>>2)];
+		eps_status.analog_ext4_8=(uint8_t)(eps_status.analog_ext4>>2);
 	#endif
 }
 

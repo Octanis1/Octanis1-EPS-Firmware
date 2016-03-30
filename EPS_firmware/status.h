@@ -16,10 +16,11 @@
 
 #define NB_ANALOG_ACQ 16
 //battery voltage threshold levels
-#define THRESHOLD_80	810	 	//80% of charge (100% is 4.2V)
-#define THRESHOLD_60	761		//60% of charge
-#define THRESHOLD_40	712		//40% of charge
-#define THRESHOLD_20	663		//20% of charge (0% is 3V)
+#define THRESHOLD_80	585	 	//80% of charge (100% is 4.2V & 636 adc counts)
+#define THRESHOLD_60	534		//60% of charge
+#define THRESHOLD_40	481		//40% of charge
+#define THRESHOLD_20	430		//20% of charge (0% is 2.5V)
+#define THRESHOLD_0		378		//0% of charge
 //battery temperature thresholds in ADC counts
 #define COLD_20			385		//too cold for charging
 #define COLD_0			672		//ok for charging

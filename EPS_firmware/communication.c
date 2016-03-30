@@ -20,20 +20,21 @@ enum i2c_status_{
 
 eps_status_t eps_status;
 uint8_t module_status[N_MODULES]; //stores the answers to be sent to an eventual i2c request
-uint8_t poke_counter=0;
-uint8_t poke_pin_state=0;
-uint8_t heater1_counter=0;
+uint8_t poke_counter;
+uint8_t poke_pin_state;
+uint8_t heater1_counter;
+uint8_t timer_A_delayed_counter;
 
 void init_timer_A()
 {
-	TACCR0 += 25000;
+	TACCR0 += 0xffff;
 	TACCTL0 = CCIE;                     // TACCR0 interrupt enabled
 	TACTL = TASSEL_2 + MC_2 + ID_3;     // SMCLK, contmode
 }
 
 void init_timer_B()
 {
-	TBCCR0 += 25000;
+	TBCCR0 += 0xffff;
 	TBCCTL0 = CCIE;                     // TACCR0 interrupt enabled
 	TBCTL = TBSSEL_2 + MC_2 + ID_3;     // SMCLK, contmode
 }
@@ -49,6 +50,10 @@ void init_i2c()
 	UCB0I2CIE |= UCSTTIE;                     // Enable STT interrupt
 	IE2 |= UCB0TXIE;                          // Enable TX interrupt
 	TXData = 0xff;                            // Used to hold TX data
+	timer_A_delayed_counter=0x0f;			  //prevent the main board reboot at start for 0xff cycles of timer A interrupt
+	poke_counter=0;
+	poke_pin_state=0;
+	heater1_counter=0;						  //make sure the heater is disabled
 }
 
 
@@ -72,13 +77,13 @@ void check_i2c_command() // sets the response.
 		case HEAT_2_ON: TXData=module_status[HT2]; break;
 		case HEAT_3_ON: TXData=module_status[HT3]; break;
 
-		case V_BAT:TXData = eps_status.v_bat; break;
-		case V_SC: TXData = eps_status.v_solar; break;
-		case I_IN: TXData = eps_status.current_in; break;
-		case I_OUT: TXData = eps_status.current_out; break;
-		case AEXT1: TXData = eps_status.analog_ext1; break;
-		case AEXT2: TXData = eps_status.analog_ext2; break;
-		case T_BAT:TXData = eps_status.t_bat;break;
+		case V_BAT:TXData = eps_status.v_bat_8; break;
+		case V_SC: TXData = eps_status.v_solar_8; break;
+		case I_IN: TXData = eps_status.current_in_8; break;
+		case I_OUT: TXData = eps_status.current_out_8; break;
+		case AEXT1: TXData = eps_status.analog_ext1_8; break;
+		case AEXT2: TXData = eps_status.analog_ext2_8; break;
+		case T_BAT:TXData = eps_status.t_bat_8;break;
 
 		#ifndef ANALOG_6
 		case AEXT3: TXData = eps_status.analog_ext3; break;
@@ -147,8 +152,9 @@ __interrupt void USCIAB0RX_ISR(void)
 __interrupt void Timer_B ()
 {
 	//here we poke the main board and after x attempt without reply we reboot it
-	heater1_counter--;
-	TBCCR0 += 25000;
+	if(heater1_counter)
+		heater1_counter--;
+	TBCCR0 += 0xffff;
 	if(heater1_counter==0)
 	{
 		TBCCTL0 &= ~CCIE;				     				   //disable timer B interrupt
@@ -162,16 +168,21 @@ __interrupt void Timer_B ()
 #pragma vector=TIMERA0_VECTOR
 __interrupt void Timer_A ()
 {
-	//here we poke the main board and after x attempt without reply we reboot it
-	poke_pin_state = ~(poke_pin_state);
-	module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
-	if(poke_counter>=4){
-		module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, ~(poke_pin_state), COMM_OK);
+	if(~timer_A_delayed_counter)
+	{
+		//here we poke the main board and after x attempt without reply we reboot it
+		poke_pin_state = ~(poke_pin_state);
+		module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
+		if(poke_counter>=4){
+			module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, ~(poke_pin_state), COMM_OK);
 		if(poke_pin_state)poke_counter=0;
+		}
+		if(poke_pin_state)
+			poke_counter++;
 	}
-	if(poke_pin_state)
-		poke_counter++;
-	TACCR0 += 50000;
+	else
+		timer_A_delayed_counter--;
+	TACCR0 += 0xffff;
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
 
