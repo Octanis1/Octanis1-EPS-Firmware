@@ -20,14 +20,22 @@ enum i2c_status_{
 
 eps_status_t eps_status;
 uint8_t module_status[N_MODULES]; //stores the answers to be sent to an eventual i2c request
-static uint8_t poke_counter=0;
-static uint8_t poke_pin_state=0;
+uint8_t poke_counter=0;
+uint8_t poke_pin_state=0;
+uint8_t heater1_counter=0;
 
 void init_timer_A()
 {
 	TACCR0 += 25000;
 	TACCTL0 = CCIE;                     // TACCR0 interrupt enabled
 	TACTL = TASSEL_2 + MC_2 + ID_3;     // SMCLK, contmode
+}
+
+void init_timer_B()
+{
+	TBCCR0 += 25000;
+	TBCCTL0 = CCIE;                     // TACCR0 interrupt enabled
+	TBCTL = TBSSEL_2 + MC_2 + ID_3;     // SMCLK, contmode
 }
 
 void init_i2c()
@@ -100,7 +108,7 @@ void execute_i2c_command()
 			case M3V3_2_ON: module_control(PORT_3V3_2_EN,PIN_3V3_2_EN,ON, module_status[M332]); break;
 			case M5V_ON: module_control(PORT_5V_EN,PIN_5V_EN, ON, module_status[M5]); break;
 			case M11V_ON: module_control(PORT_11V_EN,PIN_11V_EN, ON, module_status[M11]); break;
-			case HEAT_1_ON: module_control(PORT_HEATER_1_EN,PIN_HEATER_1_EN, ON ,module_status[HT1]); break;
+			case HEAT_1_ON: module_control(PORT_HEATER_1_EN,PIN_HEATER_1_EN, ON ,module_status[HT1]); init_timer_B(); heater1_counter=10; break;
 			case HEAT_2_ON: module_control(PORT_HEATER_2_EN,PIN_HEATER_2_EN, ON ,module_status[HT2]); break;
 			case HEAT_3_ON: module_control(PORT_HEATER_3_EN,PIN_HEATER_3_EN, ON , module_status[HT3]); break;
 
@@ -138,6 +146,23 @@ __interrupt void USCIAB0RX_ISR(void)
 	RXData = UCB0RXBUF;						//read command
 	check_i2c_command();
 }
+
+
+// Timer B0 interrupt service routine
+#pragma vector=TIMERB0_VECTOR
+__interrupt void Timer_B ()
+{
+	//here we poke the main board and after x attempt without reply we reboot it
+	heater1_counter--;
+	TBCCR0 += 25000;
+	if(heater1_counter==0)
+	{
+		TBCCTL0 &= ~CCIE;				     				   //disable timer B interrupt
+		module_control(PORT_HEATER_1_EN,PIN_HEATER_1_EN,OFF);  //disable heater1
+	}
+	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
+}
+
 
 // Timer A0 interrupt service routine
 #pragma vector=TIMERA0_VECTOR

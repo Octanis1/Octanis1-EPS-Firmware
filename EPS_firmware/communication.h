@@ -32,6 +32,7 @@ extern eps_status_t eps_status;
 extern uint8_t module_status[N_MODULES]; //stores the answers to be sent to an eventual i2c request
 
 void init_timer_A();
+void init_timer_B();
 void init_i2c();
 void execute_i2c_command();
 
