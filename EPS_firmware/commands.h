@@ -21,6 +21,8 @@
 #define SC_ON		0xC1
 #define SC_OFF		0xC0
 
+#define ALIVE 		0xA0
+
 //switch heaters on / off
 #define HEAT_1_ON	0x41
 #define HEAT_1_OFF  0x40

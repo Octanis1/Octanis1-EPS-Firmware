@@ -50,5 +50,8 @@
 #define PORT_HEATER_3_EN	&P1OUT
 #define PIN_HEATER_3_EN		BIT2
 
+#define MASTER_POKE_PORT	&P3OUT
+#define MASTER_POKE_PIN		BIT7   //on Analog EXT4 /!\
+
 void module_control(volatile unsigned char * port, unsigned char pin, char state, char permission);
 #endif /* MODULE_CONTROL_H_ */
