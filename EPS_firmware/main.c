@@ -86,8 +86,10 @@ void init_eps()
 	init_adc();
 	init_timer_A();
 
-	P1DIR |= PIN_3V3_M_EN + PIN_3V3_1_EN + PIN_3V3_2_EN + PIN_5V_EN + PIN_11V_EN;
+	P1DIR |= PIN_3V3_M_EN + PIN_3V3_1_EN + PIN_3V3_2_EN + PIN_5V_EN + PIN_11V_EN + PIN_HEATER_1_EN + PIN_HEATER_2_EN + PIN_HEATER_3_EN;
 	P1OUT = PIN_3V3_1_EN; //all modules off, except main 3v3 (active low) and the gps on 3V3_1.
+
+	P3DIR |= MASTER_POKE_PIN2+MASTER_POKE_PIN;
 
 	unsigned int i;
     for(i = 0xFFFF; i > 0; i--);            // Delay

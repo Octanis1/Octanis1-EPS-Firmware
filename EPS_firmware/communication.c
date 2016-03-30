@@ -61,7 +61,7 @@ void check_i2c_command() // sets the response.
 {
 	switch(RXData)
 	{
-		case ALIVE: poke_counter=COMM_OK;break;
+		case ALIVE: TXData=COMM_OK;break;
 		case M3V3_1_OFF: TXData=COMM_OK; break;
 		case M3V3_2_OFF: TXData=COMM_OK; break;
 		case M5V_OFF: TXData=COMM_OK; break;
@@ -172,17 +172,26 @@ __interrupt void Timer_A ()
 	{
 		//here we poke the main board and after x attempt without reply we reboot it
 		poke_pin_state = ~(poke_pin_state);
-		module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
+
 		if(poke_counter>=4){
 			timer_A_delayed_counter=10; //5 interrupts before to wake up the main board
+
+			P3OUT &= ~(MASTER_POKE_PIN2+MASTER_POKE_PIN); // put interrupt pin low to shut off power completely.
 			module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, ~(poke_pin_state), COMM_OK);
-		if(poke_pin_state)poke_counter=0;
+
+			if(poke_pin_state) poke_counter=0;
+		}
+		else
+		{
+			P3OUT ^= MASTER_POKE_PIN2+MASTER_POKE_PIN;
 		}
 		if(poke_pin_state)
 			poke_counter++;
 	}
 	else
+	{
 		timer_A_delayed_counter--;
+	}
 	TACCR0 += 0xffff;
 	__bic_SR_register_on_exit(CPUOFF);        // Clear CPUOFF bit from 0(SR)
 }
