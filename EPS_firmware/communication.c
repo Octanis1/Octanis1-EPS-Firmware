@@ -168,12 +168,13 @@ __interrupt void Timer_B ()
 #pragma vector=TIMERA0_VECTOR
 __interrupt void Timer_A ()
 {
-	if(~timer_A_delayed_counter)
+	if(timer_A_delayed_counter==0)
 	{
 		//here we poke the main board and after x attempt without reply we reboot it
 		poke_pin_state = ~(poke_pin_state);
 		module_control(MASTER_POKE_PORT, MASTER_POKE_PIN,poke_pin_state, COMM_OK);
 		if(poke_counter>=4){
+			timer_A_delayed_counter=10; //5 interrupts before to wake up the main board
 			module_control(PORT_3V3_M_EN,PIN_3V3_M_EN, ~(poke_pin_state), COMM_OK);
 		if(poke_pin_state)poke_counter=0;
 		}
